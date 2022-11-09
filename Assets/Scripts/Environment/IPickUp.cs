@@ -1,0 +1,4 @@
+﻿interface IPickUp
+{
+    void Collect();
+}
