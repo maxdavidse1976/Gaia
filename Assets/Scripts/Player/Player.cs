@@ -32,7 +32,6 @@ public class Player : MonoBehaviour
         {
             if (groundCheck != null) 
             {
-                Debug.Log("We have a ground Check");
                 return groundCheck.CheckGrounded();
             }
             return false;
@@ -52,18 +51,6 @@ public class Player : MonoBehaviour
     void Update()
     {
         rigidBody.velocity = new Vector2(inputX * moveSpeed, rigidBody.velocity.y);
-
-        //if (Input.GetButtonDown("Jump") && grounded)
-        //{
-        //    canDoubleJump = true;
-        //    velocity.y = jumpStrength;
-        //}
-        //else if (Input.GetButtonDown("Jump") && canDoubleJump)
-        //{
-        //    canDoubleJump=false;
-        //    velocity.y = jumpStrength;
-        //}
-
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -100,6 +87,20 @@ public class Player : MonoBehaviour
     {
         coinsCollected += pickupSize;
         return coinsCollected;
+    }
+
+    public void TakeDamage(int damageToTake)
+    {
+        // Does the current damage kill our player?
+        if (currentHealth - damageToTake <= 0)
+        {
+            Debug.Log("Player died!");
+        }
+
+        if (currentHealth - damageToTake > 0)
+        {
+            currentHealth-= damageToTake;
+        }
     }
 
     public float Heal(int amountToHeal)
