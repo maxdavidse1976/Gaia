@@ -30,7 +30,6 @@ public class InventoryItem : MonoBehaviour, IPickUp
     public void Collect()
     {
         Player.instance.PickupInventoryItem(inventoryName, inventorySprite);
-        UIManager.instance.UpdateInventoryItemSprite(inventorySprite);
     }
 
     public InventoryType GetInventoryType()

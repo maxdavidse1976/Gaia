@@ -23,14 +23,22 @@ public class InventoryManager : MonoBehaviour
         
     }
 
+    public bool HasInventoryItem(string inventoryName)
+    {
+        return inventory.ContainsKey(inventoryName);
+    }
+
     public void AddInventoryItem(string inventoryName, Sprite image)
     {
         inventory.Add(inventoryName, image);
+        UIManager.instance.UpdateInventoryItemSprite(image);
+
     }
 
     public void RemoveInventoryItem(string inventoryName)
     {
         inventory.Remove(inventoryName);
+        UIManager.instance.SetDefaultInventoryItemSprite();
     }
 
 }

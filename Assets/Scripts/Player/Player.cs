@@ -2,15 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Player : PhysicsObject
+public class Player : MonoBehaviour
 {
     private int coinsCollected;
     public static Player instance;
-    private Rigidbody2D rigidBody;
+    [SerializeField] private Rigidbody2D rigidBody;
 
-    [SerializeField] private float maxSpeed = 1;
+    [SerializeField] private float moveSpeed = 1;
     [SerializeField] private float jumpStrength = 10;
     public float maxHealth = 100;
     [SerializeField] private float currentHealth = 0;
@@ -19,6 +20,24 @@ public class Player : PhysicsObject
 
     [SerializeField] private Dictionary<string, Sprite> inventory = new Dictionary<string, Sprite>();
     [SerializeField] private Sprite keySprite;
+
+    private bool isGrounded = false;
+    [SerializeField] private GroundCheck groundCheck = null;
+
+    private float inputX;
+
+    public bool grounded
+    {
+        get
+        {
+            if (groundCheck != null) 
+            {
+                Debug.Log("We have a ground Check");
+                return groundCheck.CheckGrounded();
+            }
+            return false;
+        }
+    }
 
     private void Awake()
     {
@@ -32,18 +51,39 @@ public class Player : PhysicsObject
 
     void Update()
     {
-        targetVelocity = new Vector2(Input.GetAxis("Horizontal") * maxSpeed, 0);
-        if (Input.GetButtonDown("Jump") && grounded)
+        rigidBody.velocity = new Vector2(inputX * moveSpeed, rigidBody.velocity.y);
+
+        //if (Input.GetButtonDown("Jump") && grounded)
+        //{
+        //    canDoubleJump = true;
+        //    velocity.y = jumpStrength;
+        //}
+        //else if (Input.GetButtonDown("Jump") && canDoubleJump)
+        //{
+        //    canDoubleJump=false;
+        //    velocity.y = jumpStrength;
+        //}
+
+    }
+
+    public void Move(InputAction.CallbackContext context)
+    {
+        inputX = context.ReadValue<Vector2>().x;
+    }
+
+    public void Jump(InputAction.CallbackContext context)
+    {
+        Debug.Log("Is my player Grounded" + grounded);
+        if (context.performed && grounded)
         {
             canDoubleJump = true;
-            velocity.y = jumpStrength;
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpStrength);
         }
-        else if (Input.GetButtonDown("Jump") && canDoubleJump)
-        {
-            canDoubleJump=false;
-            velocity.y = jumpStrength;
+        else if (context.performed && canDoubleJump) 
+        { 
+            canDoubleJump = false;
+            rigidBody.velocity = new Vector2(rigidBody.velocity.x, jumpStrength);
         }
-
     }
 
     public int GetCoinCount()
