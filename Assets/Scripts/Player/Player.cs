@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public partial class Player : MonoBehaviour
 {
     private int coinsCollected;
     public static Player instance;
@@ -26,6 +26,22 @@ public class Player : MonoBehaviour
 
     private float inputX;
 
+    public enum PlayerState
+    {
+        Idle,
+        Walk,
+        Run,
+        Falling,
+        Jump,
+        Highjump,
+        Attack,
+        Push,
+        Hurt,
+        Dead
+    }
+
+    public PlayerState state = PlayerState.Idle;
+    
     public bool grounded
     {
         get
