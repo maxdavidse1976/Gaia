@@ -22,29 +22,19 @@ public class Enemy : MonoBehaviour
         rigidBody.velocity = new Vector2(moveSpeed * direction, 0);
         // Left ledge check
         leftLedgeRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x - raycastOffset.x, transform.position.y + raycastOffset.y), Vector2.down, raycastLength);
-        Debug.DrawRay(new Vector2(transform.position.x - raycastOffset.x, transform.position.y + raycastOffset.y), Vector2.down * raycastLength, Color.green);
-        if (leftLedgeRaycastHit.collider == null)
-        {
-            direction = 1;
-        }
-
+        if (leftLedgeRaycastHit.collider == null) direction = 1;
+        
         // Right ledge check
         rightLedgeRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x + raycastOffset.x, transform.position.y + raycastOffset.y), Vector2.down, raycastLength);
-        Debug.DrawRay(new Vector2(transform.position.x + raycastOffset.x, transform.position.y + raycastOffset.y), Vector2.down * raycastLength, Color.blue);
-        if (rightLedgeRaycastHit.collider == null)
-        {
-            direction = -1;
-        }
+        if (rightLedgeRaycastHit.collider == null) direction = -1; 
 
-        //// Left wall check
-        //leftWallRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, raycastLength, raycastLayerMask);
-        //Debug.DrawRay(new Vector2(transform.position.x, transform.position.y), Vector2.left * raycastLength, Color.magenta);
-        //if (leftWallRaycastHit.collider != null) direction = 1;
+        // Left wall check
+        leftWallRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.left, raycastLength, raycastLayerMask);
+        if (leftWallRaycastHit.collider != null) direction = 1;
 
-        //// Right wall check
-        //rightWallRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, raycastLength, raycastLayerMask);
-        //Debug.DrawRay(new Vector2(transform.position.x, transform.position.y), Vector2.right * raycastLength, Color.red);
-        //if (rightWallRaycastHit.collider != null) direction = -1;
+        // Right wall check
+        rightWallRaycastHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.right, raycastLength, raycastLayerMask);
+        if (rightWallRaycastHit.collider != null) direction = -1;
     }
 
     private void DetermineDirection()

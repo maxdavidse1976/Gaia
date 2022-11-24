@@ -9,6 +9,13 @@ public class DialogueUI : MonoBehaviour
     [SerializeField] private TMP_Text dialogueText;
     [SerializeField] private DialogueObject testDialogue;
 
+    public static DialogueUI instance;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         CloseDialogueBox();
@@ -23,13 +30,24 @@ public class DialogueUI : MonoBehaviour
 
     private IEnumerator StepThroughDialogue(DialogueObject dialogueObject)
     {
-        foreach (string dialogue in dialogueObject.Dialogue)
+        for (int i = 0; i < dialogueObject.Dialogue.Length; i++)
         {
+            string dialogue = dialogueObject.Dialogue[i];
             yield return TypeWriterEffect.instance.Run(dialogue, dialogueText);
+
+            // If we have any responses configured, don't wait for the space bar, but break out of the for loop
+            if (i == dialogueObject.Dialogue.Length - 1 && dialogueObject.HasResponses) break;
             yield return new WaitUntil(() => Keyboard.current.enterKey.wasPressedThisFrame);
         }
 
-        CloseDialogueBox();
+        if (dialogueObject.HasResponses)
+        {
+            ResponseHandler.instance.ShowResponses(dialogueObject.Responses);
+        }
+        else
+        {
+            CloseDialogueBox();
+        }
     }
 
     private void CloseDialogueBox()

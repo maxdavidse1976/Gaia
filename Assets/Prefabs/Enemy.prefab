@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2299394156724380952}
   - component: {fileID: 2299394156724380953}
   - component: {fileID: 1320370853118221239}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,6 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 2299394156724380953}
+  spriteRenderer: {fileID: 0}
   moveSpeed: 2
   raycastLayerMask:
     serializedVersion: 2
@@ -145,3 +146,4 @@ MonoBehaviour:
   raycastLength: 1
   attackPower: 10
   maxHealth: 100
+  direction: 1
